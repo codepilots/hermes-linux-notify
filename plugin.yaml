@@ -1,0 +1,22 @@
+name: linux-notify
+version: 0.1.0
+manifest_version: 2
+description: Local Linux desktop notifications (notify-send) when Hermes needs your approval or an answer, and when a long task finishes.
+author: Autumn Thomson
+license: MIT
+requires_hermes: ">=0.21.6"
+provides_hooks:
+  - pre_llm_call
+  - on_session_end
+  - subagent_start
+  - on_human_input_request
+  - on_human_input_resolved
+config_schema:
+  notify_input: {type: bool, default: true, description: "Notify when Hermes blocks on you (approval, clarify question, sudo password)"}
+  notify_completion: {type: bool, default: true, description: "Notify when a turn finishes"}
+  notify_failures: {type: bool, default: true, description: "Also notify when a long turn fails or is cut off"}
+  completion_min_seconds: {type: int, default: 30, description: "Only notify completion for turns that ran at least this long (0 = every turn)"}
+  input_urgency: {type: str, default: "critical", description: "notify-send urgency for input/approval prompts: low, normal or critical (critical stays until dismissed)"}
+  close_on_resolve: {type: bool, default: true, description: "Dismiss the input notification once the prompt is answered"}
+  skip_platforms: {type: list, default: [cron], description: "Session platforms that never notify"}
+  icon: {type: str, default: "hermes-desktop", description: "Icon name or path"}
